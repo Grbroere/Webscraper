@@ -1,0 +1,24 @@
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://worldwide.espacenet.com/publicationDetails/biblio?II=0&ND=3&adjacent=true&locale=en_EP&FT=D&date=20220310&CC=LT&NR=3688819T&KC=T'
+
+# Make a GET request to the URL
+response = requests.get(url)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content with BeautifulSoup
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Find the title element
+    title_element = soup.find('h3', {'id': 'pagebody'})
+
+    if title_element:
+        title = title_element.get_text(strip=True)
+        print(f'Title: {title}')
+    else:
+        print('Title not found on the page.')
+else:
+    print(f'Error: Unable to fetch the page. Status Code: {response.status_code}')
+    
